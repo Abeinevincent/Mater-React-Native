@@ -7,13 +7,13 @@
  */
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import Button from './src/utils/buttons/Button';
+import Buttons from './src/utils/Buttons';
 
 const App = () => {
   
   return (
     <View style={styles.body}>
-      <Button />
+      <Buttons />
     </View>
   );
 };
