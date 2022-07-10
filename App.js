@@ -9,6 +9,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import BasicComopnents from './src/utils/BasicComponents';
 import Buttons from './src/utils/Buttons';
+import List from './src/utils/List';
 import Styling from './src/utils/Styling';
 
 const App = () => {
@@ -16,7 +17,8 @@ const App = () => {
     <View style={styles.body}>
       {/* <Buttons /> */}
       {/* <BasicComopnents /> */}
-      <Styling />
+      {/* <Styling /> */}
+      <List />
     </View>
   );
 };
