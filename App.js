@@ -11,6 +11,7 @@ import BasicComopnents from './src/utils/BasicComponents';
 import Buttons from './src/utils/Buttons';
 import List from './src/utils/List';
 import Styling from './src/utils/Styling';
+import TextInput from './src/utils/TextInputComp';
 
 const App = () => {
   return (
@@ -18,7 +19,8 @@ const App = () => {
       {/* <Buttons /> */}
       {/* <BasicComopnents /> */}
       {/* <Styling /> */}
-      <List />
+      {/* <List /> */}
+      <TextInput />
     </View>
   );
 };
