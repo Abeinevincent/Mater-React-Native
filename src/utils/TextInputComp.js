@@ -9,6 +9,7 @@ import {
   ToastAndroid,
   Modal,
   Image,
+  ImageBackground,
 } from 'react-native';
 import CustomButton from './CustomButton';
 
@@ -57,38 +58,45 @@ const TextInputComp = () => {
   const displayText = !pressed ? 'Press Me' : 'Clear';
 
   return (
-    <View style={styles.body}>
-      <Modal visible={showModal} onRequestClose={() => setShowModal(false)}>
-        <View style={styles.warning_modal}>
-          <View style={styles.warning_modal_inner_view}>
-            <Text style={styles.text}>
-              The name must be atleast 4 characters
-            </Text>
+    <ImageBackground
+      style={styles.body}
+      source={{uri: 'https://www.istockphoto.com/photos/app-background'}}
+    >
+      <View style={styles.body}>
+        <Modal visible={showModal} onRequestClose={() => setShowModal(false)}>
+          <View style={styles.warning_modal}>
+            <View style={styles.warning_modal_inner_view}>
+              <Text style={styles.text}>
+                The name must be atleast 4 characters
+              </Text>
+            </View>
           </View>
-        </View>
-      </Modal>
-      {pressed ? (
-        <>
-          <Text style={styles.text}>The name entered is {name}</Text>
+        </Modal>
+        {pressed ? (
+          <>
+            <Text style={styles.text}>The name entered is {name}</Text>
+            <Image
+              style={{width: 150, height: 150}}
+              source={{
+                uri: 'https://www.istockphoto.com/photos/app-background',
+              }}
+            />
+          </>
+        ) : (
           <Image
             style={{width: 150, height: 150}}
-            source={require('../../assets/images/success.jpg')}
+            source={require('../../assets/images/error.png')}
           />
-        </>
-      ) : (
-        <Image
-          style={{width: 150, height: 150}}
-          source={require('../../assets/images/error.png')}
+        )}
+        <TextInput
+          style={styles.input}
+          value={name}
+          onChangeText={value => setName(value)}
+          placeholder="Enter your name"
         />
-      )}
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={value => setName(value)}
-        placeholder="Enter your name"
-      />
-      <CustomButton displayText={displayText} onPress={onPress} />
-    </View>
+        <CustomButton displayText={displayText} onPress={onPress} />
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -96,7 +104,6 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     width: '100%',
-    backgroundColor: 'gray',
     alignItems: 'center',
     justifyContent: 'center',
   },
