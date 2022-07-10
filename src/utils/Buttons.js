@@ -22,6 +22,20 @@ const Buttons = () => {
 
   return (
     <View style={styles.body}>
+      <View
+        style={{
+          backgroundColor: 'green',
+          textAlign: 'center',
+          flex: 1,
+          justifyContent: 'center',
+          width: 300,
+          height: 300,
+        }}>
+        {/* You can as well have inline styles together with styles from the stylesheet object */}
+        <Text style={[{color: 'white'}, styles.text]}>
+          Sample Text for learning inline styles
+        </Text>
+      </View>
       <Text style={styles.text}>{count}</Text>
       {/* Buttons [uncomment other buttons to explore how they are working] */}
       {/* Normal sample button */}
