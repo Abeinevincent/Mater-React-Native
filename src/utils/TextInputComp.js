@@ -8,6 +8,7 @@ import {
   Alert,
   ToastAndroid,
   Modal,
+  Image,
 } from 'react-native';
 import CustomButton from './CustomButton';
 
@@ -60,11 +61,26 @@ const TextInputComp = () => {
       <Modal visible={showModal} onRequestClose={() => setShowModal(false)}>
         <View style={styles.warning_modal}>
           <View style={styles.warning_modal_inner_view}>
-            <Text style={styles.text}>The name must be atleast 4 characters</Text>
+            <Text style={styles.text}>
+              The name must be atleast 4 characters
+            </Text>
           </View>
         </View>
       </Modal>
-      {pressed && <Text style={styles.text}>The name entered is {name}</Text>}
+      {pressed ? (
+        <>
+          <Text style={styles.text}>The name entered is {name}</Text>
+          <Image
+            style={{width: 150, height: 150}}
+            source={require('../../assets/images/success.jpg')}
+          />
+        </>
+      ) : (
+        <Image
+          style={{width: 150, height: 150}}
+          source={require('../../assets/images/error.png')}
+        />
+      )}
       <TextInput
         style={styles.input}
         value={name}
@@ -109,8 +125,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'blue',
-    width: "80%",
-    marginVertical: 200
+    width: '80%',
+    marginVertical: 200,
     // ... have here your custom styles to display the modal the way you want
   },
 });
