@@ -1,11 +1,10 @@
 import React, {useEffect} from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
-import CustomButton from '../utils/CustomButton';
 
 const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Home');
+      navigation.replace('HomeTabs');
     }, 2000);
   }, []);
 

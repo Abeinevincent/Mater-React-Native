@@ -9,31 +9,53 @@ import Home from './src/screens/Home';
 import Settings from './src/screens/Settings';
 import Splash from './src/screens/Splash';
 import Profile from './src/screens/Profile';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-function HomeScreen() {
+const Tab = createBottomTabNavigator();
+
+const HomeTabs = () => {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home!</Text>
-    </View>
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, size, color}) => {
+          let iconName;
+          if (route.name === 'Home') {
+            iconName = 'home';
+            size = focused ? 25 : 20;
+            color = focused ? 'red' : '#ddd';
+          } else if (route.name === 'Settings') {
+            size = focused ? 25 : 20;
+            color = focused ? 'red' : '#ddd';
+            iconName = 'cog';
+          } else if (route.name === 'Profile') {
+            color = focused ? 'red' : '#ddd';
+            size = focused ? 25 : 20;
+            iconName = 'user';
+          }
+          return <FontAwesome5 size={size} color={color} name={iconName} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: "yellow",
+        inactiveTintColor: "gray",
+        activeBackgroundColor: "#eee",
+        inactiveBackgroundColor: "#fff",
+      }}
+      >
+      <Tab.Screen options={{tabBarBadge: 2}} name="Home" component={Home} />
+      <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen name="Profile" component={Profile} />
+    </Tab.Navigator>
   );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
-
-const Stack = createStackNavigator();
+};
+const RootStack = createStackNavigator();
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Splash">
-          <Stack.Screen
+        <RootStack.Navigator initialRouteName="Splash">
+          <RootStack.Screen
             options={{
               headerShown: false,
               // ...other options you may need to customise
@@ -41,14 +63,8 @@ export default function App() {
             name="Splash"
             component={Splash}
           />
-          <Stack.Screen
-            options={{headerLeft: null}}
-            name="Home"
-            component={Home}
-          />
-          <Stack.Screen name="Settings" component={Settings} />
-          <Stack.Screen name="Profile" component={Profile} />
-        </Stack.Navigator>
+          <RootStack.Screen name="HomeTabs" component={HomeTabs} />
+        </RootStack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );
