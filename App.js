@@ -1,41 +1,55 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import BasicComopnents from './src/utils/BasicComponents';
-import Buttons from './src/utils/Buttons';
-import List from './src/utils/List';
-import Styling from './src/utils/Styling';
-import TextInput from './src/utils/TextInputComp';
+import 'react-native-gesture-handler';
+import * as React from 'react';
+import {Text, View} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {createStackNavigator} from '@react-navigation/stack';
+import Home from './src/screens/Home';
+import Settings from './src/screens/Settings';
+import Splash from './src/screens/Splash';
+import Profile from './src/screens/Profile';
 
-const App = () => {
+function HomeScreen() {
   return (
-    <View style={styles.body}>
-      {/* <Buttons /> */}
-      {/* <BasicComopnents /> */}
-      {/* <Styling /> */}
-      {/* <List /> */}
-      <TextInput />
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Home!</Text>
     </View>
   );
-};
+}
 
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
+function SettingsScreen() {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
 
-export default App;
+const Stack = createStackNavigator();
+
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Splash">
+          <Stack.Screen
+            options={{
+              headerShown: false,
+              // ...other options you may need to customise
+            }}
+            name="Splash"
+            component={Splash}
+          />
+          <Stack.Screen
+            options={{headerLeft: null}}
+            name="Home"
+            component={Home}
+          />
+          <Stack.Screen name="Settings" component={Settings} />
+          <Stack.Screen name="Profile" component={Profile} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+}
