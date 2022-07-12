@@ -1,8 +1,9 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import {Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+// import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+// import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from './src/screens/Home';
@@ -10,8 +11,14 @@ import Settings from './src/screens/Settings';
 import Splash from './src/screens/Splash';
 import Profile from './src/screens/Profile';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-const Tab = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
+// const Tab = createMaterialBottomTabNavigator();
+// const Tab = createMaterialTopTabNavigator();
+// const Drawer = createDrawerNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 const HomeTabs = () => {
   return (
@@ -36,12 +43,12 @@ const HomeTabs = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: "yellow",
-        inactiveTintColor: "gray",
-        activeBackgroundColor: "#eee",
-        inactiveBackgroundColor: "#fff",
+        activeTintColor: 'yellow',
+        inactiveTintColor: 'gray',
+        headerShown: false,
+        showIcon: true
       }}
-      >
+      barStyle={{backgroundColor: 'green'}}>
       <Tab.Screen options={{tabBarBadge: 2}} name="Home" component={Home} />
       <Tab.Screen name="Settings" component={Settings} />
       <Tab.Screen name="Profile" component={Profile} />

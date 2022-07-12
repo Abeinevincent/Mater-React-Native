@@ -12,7 +12,7 @@ const Profile = ({navigation}) => {
   const onPressHandler2 = () => {
     navigation.navigate('Settings');
   };
-  return (
+  return ( 
     <View style={styles.body}>
       <Text style={styles.text}>Profile Screen</Text>
       <CustomButton displayText={displayText} onPress={onPressHandler} />
