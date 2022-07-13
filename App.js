@@ -1,9 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-// import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-// import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from './src/screens/Home';
@@ -18,12 +15,16 @@ export default function App() {
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
             options={{
-              headerShown: false
+              headerShown: false,
             }}
             name="Login"
             component={Login}
           />
-          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen
+            name="Home"
+            options={{headerLeft: null}}
+            component={Home}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

@@ -2,12 +2,15 @@ import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert, StyleSheet, Text, TextInput, View} from 'react-native';
 import CustomButton from '../utils/CustomButton';
+import { set } from 'immer/dist/internal';
 
 const Home = ({navigation}) => {
   const displayText = 'Update Details';
   const displayText2 = 'Remove Details';
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
+
+  const [email, setEmail] = useState("")
 
   const onPress = async () => {
     if (name.length == 0) {
@@ -49,11 +52,23 @@ const Home = ({navigation}) => {
     getData();
   }, []);
 
+  useEffect(() => {
+    const getLocalData = async () => {
+      await AsyncStorage.getItem("email").then(val => {
+        if(val != null) {
+          setEmail(val)
+        }
+      })
+    }
+    getLocalData()
+  })
+
   return (
     <View style={styles.body}>
       <Text style={styles.text}>Home Screen</Text>
       <Text style={styles.text}>Welcome! {name}</Text>
       <Text style={styles.text}>Welcome! {age}</Text>
+      <Text style={styles.text}>Welcome! {email}</Text>
       <TextInput
         value={name}
         onChangeText={value => setName(value)}

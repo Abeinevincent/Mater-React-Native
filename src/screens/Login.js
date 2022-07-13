@@ -1,45 +1,80 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Alert, Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
 import CustomButton from '../utils/CustomButton';
 
 const Login = ({navigation}) => {
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [isFetching, setIsFetching] = useState(false);
 
   const displayText = 'Submit Details';
 
-  useEffect(() => {
-    const getData = async () => {
-      await AsyncStorage.getItem('user')
-        .then(val => {
-          if (val != null) {
-            navigation.navigate('Home');
-          }
-        })
-        .catch(err => console.log(err));
-    };
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     await AsyncStorage.getItem('user')
+  //       .then(val => {
+  //         if (val != null) {
+  //           navigation.navigate('Home');
+  //         }
+  //       })
+  //       .catch(err => console.log(err));
+  //   };
+  //   getData();
+  // }, []);
 
-  const onPress = async () => {
-    console.log('Buutton pressed');
-    if (name.length == 0) {
-      Alert.alert('WARNING!', 'Name cannot be empty');
-    } else {
-      try {
-        const user = {
-          Name: name,
-          Age: age,
-        };
-        await AsyncStorage.setItem('user', JSON.stringify(user));
-      } catch (err) {
-        console.log(err);
-      }
+  const onPress = () => {
+    console.log('pressed');
+  };
+
+  const login = async () => {
+    try {
+      // Using fetch
+      // const res = await fetch(
+      //   'https://expressmysqlapitemplate.herokuapp.com/api/auth/login',
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       Accept: 'application/json',
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({
+      //       email,
+      //       password,
+      //     }),
+      //   },
+      // );
+      // const json = await res.json();
+      // console.log(json)
+
+      // Using axios
+      setIsFetching(true);
+      const res = await axios.post(
+        'https://expressmysqlapitemplate.herokuapp.com/api/auth/login',
+        {email, password},
+      );
+      console.log(res.data);
+      await AsyncStorage.setItem('email', email);
       navigation.navigate('Home');
-      setName('');
+      setIsFetching(false);
+    } catch (err) {
+      console.log(err);
     }
   };
+
+  useEffect(() => {
+    const getLocalData = async () => {
+      await AsyncStorage.getItem("email").then(val => {
+        if(val != null) {
+          navigation.navigate("Home")
+          setEmail(val)
+        }
+      })
+    }
+    getLocalData()
+  })
 
   return (
     <View style={styles.body}>
@@ -52,18 +87,23 @@ const Login = ({navigation}) => {
       <Text style={styles.text}>Login Screen</Text>
 
       <TextInput
-        value={name}
-        onChangeText={value => setName(value)}
+        value={email}
+        onChangeText={value => setEmail(value)}
         style={styles.input}
         placeholder="Enter your name"
       />
       <TextInput
         style={styles.input}
-        value={age}
-        onChangeText={val => setAge(val)}
-        placeholder="Enter your age"
+        value={password}
+        onChangeText={val => setPassword(val)}
+        placeholder="Enter your password"
+        secureTextEntry
       />
-      <CustomButton onPress={onPress} displayText={displayText} />
+      {isFetching ? (
+        <ActivityIndicator />
+      ) : (
+        <CustomButton onPress={login} displayText={displayText} />
+      )}
     </View>
   );
 };
