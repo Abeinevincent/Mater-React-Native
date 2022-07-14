@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: "Splash-Regular"
   },
 });
 
