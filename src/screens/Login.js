@@ -3,6 +3,11 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Alert, Image, StyleSheet, Text, TextInput, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
+import {useDispatch} from 'react-redux';
+import {loginUser} from '../../redux/apiCalls';
+import {newUser} from '../../redux/registerSlice';
+// import {useDispatch} from 'react-redux';
+// import {loginUser} from '../../redux/apiCalls';
 import CustomButton from '../utils/CustomButton';
 
 const Login = ({navigation}) => {
@@ -10,71 +15,71 @@ const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [isFetching, setIsFetching] = useState(false);
 
-  const displayText = 'Submit Details';
+  // const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     await AsyncStorage.getItem('user')
-  //       .then(val => {
-  //         if (val != null) {
-  //           navigation.navigate('Home');
-  //         }
-  //       })
-  //       .catch(err => console.log(err));
-  //   };
-  //   getData();
-  // }, []);
+  const displayText = 'Submit Details';
 
   const onPress = () => {
     console.log('pressed');
   };
 
-  const login = async () => {
-    try {
-      // Using fetch
-      // const res = await fetch(
-      //   'https://expressmysqlapitemplate.herokuapp.com/api/auth/login',
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       Accept: 'application/json',
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({
-      //       email,
-      //       password,
-      //     }),
-      //   },
-      // );
-      // const json = await res.json();
-      // console.log(json)
+  // Using fetch or axios
+  // const login = async () => {
+  //   try {
+  //     // Using fetch
+  //     // const res = await fetch(
+  //     //   'https://expressmysqlapitemplate.herokuapp.com/api/auth/login',
+  //     //   {
+  //     //     method: 'POST',
+  //     //     headers: {
+  //     //       Accept: 'application/json',
+  //     //       'Content-Type': 'application/json',
+  //     //     },
+  //     //     body: JSON.stringify({
+  //     //       email,
+  //     //       password,
+  //     //     }),
+  //     //   },
+  //     // );
+  //     // const json = await res.json();
+  //     // console.log(json)
 
-      // Using axios
-      setIsFetching(true);
-      const res = await axios.post(
-        'https://expressmysqlapitemplate.herokuapp.com/api/auth/login',
-        {email, password},
-      );
-      console.log(res.data);
-      await AsyncStorage.setItem('email', email);
-      navigation.navigate('Home');
-      setIsFetching(false);
-    } catch (err) {
-      console.log(err);
-    }
+  //     // Using axios
+  //     setIsFetching(true);
+  //     const res = await axios.post(
+  //       'https://expressmysqlapitemplate.herokuapp.com/api/auth/login',
+  //       {email, password},
+  //     );
+  //     console.log(res.data);
+  //     await AsyncStorage.setItem('email', email);
+  //     navigation.navigate('Home');
+  //     setIsFetching(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const dispatch = useDispatch();
+
+  // Using redux(custom reducers)
+  const login = () => {
+    // loginUser({email, password}, dispatch);
+    loginUser({email, phone}, dispatch);
+    // const val = dispatch(newUser({email, password}));
+    // console.log(val)
   };
 
-  useEffect(() => {
-    const getLocalData = async () => {
-      await AsyncStorage.getItem("email").then(val => {
-        if(val != null) {
-          navigation.navigate("Home")
-          setEmail(val)
-        }
-      })
-    }
-    getLocalData()
-  })
+  // useEffect(() => {
+  //   const getLocalData = async () => {
+  //     await AsyncStorage.getItem('email').then(val => {
+  //       if (val != null) {
+  //         navigation.navigate('Home');
+  //         setEmail(val);
+  //       }
+  //     });
+  //   };
+  //   getLocalData();
+  // });
 
   return (
     <View style={styles.body}>

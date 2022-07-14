@@ -3,13 +3,17 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {createStackNavigator} from '@react-navigation/stack';
+import store from './redux/store';
+import {Provider} from 'react-redux';
 import Home from './src/screens/Home';
 import Login from './src/screens/Login';
+
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
+    <Provider store={store}>
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
@@ -28,5 +32,6 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
+    </Provider>
   );
 }
