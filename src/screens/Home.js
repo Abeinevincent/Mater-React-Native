@@ -1,88 +1,80 @@
 import React, {useEffect, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Alert, StyleSheet, Text, TextInput, View} from 'react-native';
-import CustomButton from '../utils/CustomButton';
-import { set } from 'immer/dist/internal';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import axios from 'axios';
+// import PushNotification from 'react-native-push-notification';
 
 const Home = ({navigation}) => {
-  const displayText = 'Update Details';
-  const displayText2 = 'Remove Details';
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
+  const [data, setData] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
 
-  const [email, setEmail] = useState("")
-
-  const onPress = async () => {
-    if (name.length == 0) {
-      Alert.alert('WARNING!', 'Name cannot be empty');
-    } else {
-      try {
-        const user = {
-          Name: name,
-          Age: age,
-        };
-        AsyncStorage.mergeItem('user', JSON.stringify(user));
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
-  const onPress2 = () => {
-    if (name.length == 0) {
-      Alert.alert('WARNING!', 'Name cannot be empty');
-    } else {
-      AsyncStorage.clear();
-      navigation.navigate('Login');
+  const getData = async () => {
+    setIsFetching(true);
+    try {
+      const res = await axios.get(
+        'https://mocki.io/v1/5f879754-51a3-40e6-9c46-29559ac60c05'
+      );
+      console.log(res.data);
+      setData(res.data);
+      setIsFetching(false);
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
     }
   };
 
   useEffect(() => {
-    const getData = async () => {
-      await AsyncStorage.getItem('user')
-        .then(val => {
-          if (val != null) {
-            let user = JSON.parse(val);
-            setName(user.Name);
-            setAge(user.Age);
-          }
-        })
-        .catch(err => console.log(err));
-    };
     getData();
   }, []);
 
-  useEffect(() => {
-    const getLocalData = async () => {
-      await AsyncStorage.getItem("email").then(val => {
-        if(val != null) {
-          setEmail(val)
-        }
-      })
-    }
-    getLocalData()
-  })
-
+  const handleNotification = item => {
+    // PushNotification.localNotification({
+    //   channelId: 'test-channel',
+    //   title: `You clicked on ${item.country}`,
+    //   message: item.city,
+    // });
+    console.log('Notifications postponed');
+  };
   return (
     <View style={styles.body}>
-      <Text style={styles.text}>Home Screen</Text>
-      <Text style={styles.text}>Welcome! {name}</Text>
-      <Text style={styles.text}>Welcome! {age}</Text>
-      <Text style={styles.text}>Welcome! {email}</Text>
-      <TextInput
-        value={name}
-        onChangeText={value => setName(value)}
-        style={styles.input}
-        placeholder="Enter your name"
-      />
-      <TextInput
-        value={age}
-        onChangeText={value => setAge(value)}
-        style={styles.input}
-        placeholder="Enter your age"
-      />
-      <CustomButton onPress={onPress} displayText={displayText} />
-      <CustomButton onPress={onPress2} displayText={displayText2} />
+      {isFetching ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          keyExtractor={(item, index) => index.toString()}
+          data={data}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() => {
+                handleNotification(item);
+                navigation.navigate('Map', {
+                  city: item.city,
+                  lat: item.lat,
+                  lng: item.lng,
+                });
+              }}>
+              <View style={styles.container}>
+                <Text
+                  style={[
+                    styles.text,
+                    {fontFamily: 'Splash-Regular', fontSize: 40},
+                  ]}>
+                  {item.country}
+                </Text>
+                <Text style={styles.text}>{item.city}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      )}
     </View>
   );
 };
@@ -92,19 +84,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+  },
+  container: {
+    width: 300,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'gray',
+    marginVertical: 20,
   },
   text: {
     fontSize: 25,
     fontWeight: 'bold',
-  },
-  input: {
-    width: '90%',
-    height: 70,
-    textAlign: 'center',
-    backgroundColor: 'white',
-    marginVertical: 20,
-    fontSize: 20,
-    borderRadius: 10,
+    margin: 10,
+    color: 'white',
   },
 });
 

@@ -1,85 +1,52 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {Alert, Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
-import {useDispatch} from 'react-redux';
-import {loginUser} from '../../redux/apiCalls';
-import {newUser} from '../../redux/registerSlice';
-// import {useDispatch} from 'react-redux';
-// import {loginUser} from '../../redux/apiCalls';
 import CustomButton from '../utils/CustomButton';
+// import PushNotification from 'react-native-push-notification';
 
 const Login = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [isFetching, setIsFetching] = useState(false);
 
-  // const dispatch = useDispatch();
-
   const displayText = 'Submit Details';
 
-  const onPress = () => {
-    console.log('pressed');
+  // Using redux(custom reducers)
+  const login = async () => {
+    setIsFetching(true);
+    const res = await axios.post(
+      'https://expressmysqlapitemplate.herokuapp.com/api/auth/login',
+      {email, password},
+    );
+    console.log(res.data);
+    AsyncStorage.setItem('email', email);
+    setIsFetching(false);
+    navigation.navigate('Home');
   };
 
-  // Using fetch or axios
-  // const login = async () => {
-  //   try {
-  //     // Using fetch
-  //     // const res = await fetch(
-  //     //   'https://expressmysqlapitemplate.herokuapp.com/api/auth/login',
-  //     //   {
-  //     //     method: 'POST',
-  //     //     headers: {
-  //     //       Accept: 'application/json',
-  //     //       'Content-Type': 'application/json',
-  //     //     },
-  //     //     body: JSON.stringify({
-  //     //       email,
-  //     //       password,
-  //     //     }),
-  //     //   },
-  //     // );
-  //     // const json = await res.json();
-  //     // console.log(json)
+  useEffect(() => {
+    const getEmail = async () => {
+      await AsyncStorage.getItem('email').then(val => {
+        if (val != null) {
+          navigation.navigate('Home');
+        }
+      });
+    };
+    getEmail();
+  }, []);
 
-  //     // Using axios
-  //     setIsFetching(true);
-  //     const res = await axios.post(
-  //       'https://expressmysqlapitemplate.herokuapp.com/api/auth/login',
-  //       {email, password},
-  //     );
-  //     console.log(res.data);
-  //     await AsyncStorage.setItem('email', email);
-  //     navigation.navigate('Home');
-  //     setIsFetching(false);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
+  // const createChannel = () => {
+  //   PushNotification.createChannel({
+  //     channelId: 'test-channel',
+  //     channelName: 'test-channel',
+  //   });
   // };
 
-  const dispatch = useDispatch();
-
-  // Using redux(custom reducers)
-  const login = () => {
-    // loginUser({email, password}, dispatch);
-    loginUser({email, phone}, dispatch);
-    // const val = dispatch(newUser({email, password}));
-    // console.log(val)
-  };
-
   // useEffect(() => {
-  //   const getLocalData = async () => {
-  //     await AsyncStorage.getItem('email').then(val => {
-  //       if (val != null) {
-  //         navigation.navigate('Home');
-  //         setEmail(val);
-  //       }
-  //     });
-  //   };
-  //   getLocalData();
-  // });
+  //   createChannel();
+  // }, []);
 
   return (
     <View style={styles.body}>
